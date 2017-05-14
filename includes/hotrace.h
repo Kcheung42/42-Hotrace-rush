@@ -6,7 +6,7 @@
 /*   By: kcheung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/13 18:50:21 by kcheung           #+#    #+#             */
-/*   Updated: 2017/05/13 22:52:51 by kcheung          ###   ########.fr       */
+/*   Updated: 2017/05/13 23:22:01 by kcheung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,7 @@ typedef struct	s_hashtbl
 	int				size;
 	struct s_entry	**table;
 }				t_hashtbl;
+
+int		sse_strcmp(const char *s1, const char *s2);
 
 #endif

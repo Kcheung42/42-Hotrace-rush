@@ -6,7 +6,7 @@
 /*   By: kcheung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:38:16 by kcheung           #+#    #+#             */
-/*   Updated: 2017/05/13 23:17:43 by kcheung          ###   ########.fr       */
+/*   Updated: 2017/05/14 13:51:22 by kcheung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int ft_hash(t_hashtbl *hash_table, char *key);
 t_entry *add_entry(char *value, char *key);
 void set_hash(t_hashtbl *hash_table, char *key, char *value);
 char *ht_get(t_hashtbl *hash_table, char *key);
+
+
 
 t_hashtbl	*create_hashtable(int size)
 {
@@ -59,7 +61,7 @@ int			ft_hash(t_hashtbl *hash_table, char *key)
 	return (hashval % hash_table->size);
 }
 
-t_entry	*add_entry(char *value, char *key)
+t_entry		*add_entry(char *value, char *key)
 {
 	t_entry *new;
 
@@ -73,7 +75,7 @@ t_entry	*add_entry(char *value, char *key)
 	return (new);
 }
 
-void	set_hash(t_hashtbl *hash_table, char *key, char *value)
+void		set_hash(t_hashtbl *hash_table, char *key, char *value)
 {
 	t_entry		*cur;
 	t_entry		*last;
@@ -85,12 +87,12 @@ void	set_hash(t_hashtbl *hash_table, char *key, char *value)
 	cur = NULL;
 	bin = ft_hash(hash_table, key);
 	cur = hash_table->table[bin];
-	while (cur != NULL && cur->key != NULL && strcmp(key, cur->key) != 0)
+	while (cur != NULL && cur->key != NULL && sse_strcmp(key, cur->key) != 0)
 	{
 		last = cur;
 		cur = cur->next;
 	}
-	if(cur != NULL && cur->key != NULL && strcmp(key, cur->key) == 0)
+	if(cur != NULL && cur->key != NULL && sse_strcmp(key, cur->key) == 0)
 	{
 		free(cur->key);
 		cur->key = strdup(key);
@@ -113,7 +115,7 @@ void	set_hash(t_hashtbl *hash_table, char *key, char *value)
 	}
 }
 
-char	*ht_get(t_hashtbl *hash_table, char *key)
+char		*ht_get(t_hashtbl *hash_table, char *key)
 {
 	int		bin;
 	t_entry	*cur;
@@ -121,18 +123,17 @@ char	*ht_get(t_hashtbl *hash_table, char *key)
 	bin = ft_hash(hash_table, key);
 	cur = hash_table->table[bin];
 
-	while (cur != NULL && cur->key != NULL  && strcmp(key, cur->key) != 0)
+	while (cur != NULL && cur->key != NULL  && sse_strcmp(key, cur->key) != 0)
 		cur = cur->next;
-	if (cur == NULL || cur->key == NULL || strcmp(key, cur->key) != 0)
+	if (cur == NULL || cur->key == NULL || sse_strcmp(key, cur->key) != 0)
 		return (NULL);
 	else
 		return (cur->value);
 }
 
-int main(int argc, const char *argv[])
+int			main(int argc, const char *argv[])
 {
-	clock_t begin = clock();
-	printf("Let's Do This!\n");
+	/* clock_t begin = clock(); */
 	char		*buf1;
 	char		*buf2;
 	size_t		len;
@@ -160,9 +161,9 @@ int main(int argc, const char *argv[])
 			printf("%s Not found.\n", buf1);
 		}
 	}
-	clock_t end = clock();
-	double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-	printf("time:%f\n", time_spent);
+	/* clock_t end = clock(); */
+	/* double time_spent = (double)(end - begin) / CLOCKS_PER_SEC; */
+	/* printf("time:%f\n", time_spent); */
 	(void)argv;
 	(void)argc;
 	return (0);

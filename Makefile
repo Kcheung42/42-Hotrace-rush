@@ -6,7 +6,7 @@
 #    By: kcheung <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/27 11:10:05 by kcheung           #+#    #+#              #
-#    Updated: 2017/05/13 21:49:38 by kcheung          ###   ########.fr        #
+#    Updated: 2017/05/13 23:21:44 by kcheung          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
 
 SRC_DIR = ./srcs/
-SRC_NAME = main.c
+SRC_NAME = main.c \
+		   asm_strcmp.c
 SRCS = $(addprefix $(SRC_DIR), $(SRC_NAME))
 
 OBJ_DIR = ./obj/
