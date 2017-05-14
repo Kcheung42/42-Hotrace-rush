@@ -6,7 +6,7 @@
 #    By: kcheung <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/27 11:10:05 by kcheung           #+#    #+#              #
-#    Updated: 2017/05/13 18:00:48 by kcheung          ###   ########.fr        #
+#    Updated: 2017/05/13 21:49:38 by kcheung          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,6 @@ NAME = hotrace
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
-
-#Libft Library
-LIB_DIR = ./libft/
-LIB_INC_DIR = ./libft/includes
-LIB = $(LIB_DIR)/libft.a
-LIB_LINK = -L $(LIB_DIR) -lft
 
 SRC_DIR = ./srcs/
 SRC_NAME = main.c
@@ -29,7 +23,7 @@ OBJ_DIR = ./obj/
 OBJS = $(addprefix $(OBJ_DIR), $(SRC_NAME:%.c=%.o))
 
 INC_DIR = ./includes/
-INC = -I$(LIB_INC_DIR) -I$(INC_DIR)
+INC = -I$(INC_DIR)
 
 # COLORS
 C_NO			=	"\033[00m"
@@ -47,12 +41,9 @@ all: obj $(NAME)
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INC_DIR)*.h
 	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
-$(NAME): $(LIB) $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $^ $(LIB_LINK)
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) -o $@ $^
 	@chmod 755 $@
-
-$(LIB):
-	@make -C $(LIB_DIR)
 
 obj:
 	@mkdir -p $(OBJ_DIR)
@@ -60,13 +51,11 @@ obj:
 clean:
 	@rm -f $(OBJS)
 	@rm -rf $(OBJ_DIR)
-	@make -C $(LIB_DIR) clean
 	@echo "Cleaning" [$(NAME)] "..." $(OK)
 
 fclean: clean
 	@rm -f $(NAME)
 	@rm -rf $(NAME).dSYM
-	@make -C $(LIB_DIR) fclean
 	@echo "Delete" [$(NAME)] "..." $(OK)
 	@echo "Delete" [$(NAME_C)] "..." $(OK)
 re: fclean all
