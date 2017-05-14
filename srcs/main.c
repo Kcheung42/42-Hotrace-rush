@@ -6,7 +6,7 @@
 /*   By: kcheung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:38:16 by kcheung           #+#    #+#             */
-/*   Updated: 2017/05/13 23:11:37 by kcheung          ###   ########.fr       */
+/*   Updated: 2017/05/13 23:17:43 by kcheung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int			ft_hash(t_hashtbl *hash_table, char *key)
 	while (hashval < ULONG_MAX && *key)
 	{
 		hashval = hashval << 5;
-		hashval += *key;
+		hashval ^= *key;
 		key++;
 	}
 	return (hashval % hash_table->size);
