@@ -6,7 +6,7 @@
 /*   By: kcheung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:38:16 by kcheung           #+#    #+#             */
-/*   Updated: 2017/05/14 13:51:22 by kcheung          ###   ########.fr       */
+/*   Updated: 2017/05/14 14:30:49 by kcheung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,17 @@ t_hashtbl	*create_hashtable(int size)
 	return (hash_table);
 }
 
-int			ft_hash(t_hashtbl *hash_table, char *key)
+int            ft_hash(t_hashtbl *hash_table, char *key)
 {
-	unsigned long int	hashval;
-	int					i;
+    unsigned long int    hashval;
+    int                    i;
 
-	hashval = 0;
-	i = 0;
-	while (hashval < ULONG_MAX && *key)
-	{
-		hashval = hashval << 5;
-		hashval ^= *key;
-		key++;
-	}
-	return (hashval % hash_table->size);
+    hashval = 0;
+    while ((i = *key++))
+        hashval = i + (hashval << 6) + (hashval << 16) - hashval;
+    return (hashval % hash_table->size);
 }
+
 
 t_entry		*add_entry(char *value, char *key)
 {

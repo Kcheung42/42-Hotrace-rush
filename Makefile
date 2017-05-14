@@ -6,14 +6,14 @@
 #    By: kcheung <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/27 11:10:05 by kcheung           #+#    #+#              #
-#    Updated: 2017/05/13 23:21:44 by kcheung          ###   ########.fr        #
+#    Updated: 2017/05/14 14:32:01 by kcheung          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hotrace
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -Ofast
 
 SRC_DIR = ./srcs/
 SRC_NAME = main.c \
