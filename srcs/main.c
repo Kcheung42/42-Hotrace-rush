@@ -6,7 +6,7 @@
 /*   By: kcheung <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 15:38:16 by kcheung           #+#    #+#             */
-/*   Updated: 2017/05/14 14:30:49 by kcheung          ###   ########.fr       */
+/*   Updated: 2017/05/14 22:58:50 by kcheung          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int ft_hash(t_hashtbl *hash_table, char *key);
 t_entry *add_entry(char *value, char *key);
 void set_hash(t_hashtbl *hash_table, char *key, char *value);
 char *ht_get(t_hashtbl *hash_table, char *key);
-
-
+int in_list(const char *line, char c);
+char *ft_strtok(char *s1, const char *s2);
 
 t_hashtbl	*create_hashtable(int size)
 {
@@ -56,7 +56,6 @@ int            ft_hash(t_hashtbl *hash_table, char *key)
     return (hashval % hash_table->size);
 }
 
-
 t_entry		*add_entry(char *value, char *key)
 {
 	t_entry *new;
@@ -83,12 +82,12 @@ void		set_hash(t_hashtbl *hash_table, char *key, char *value)
 	cur = NULL;
 	bin = ft_hash(hash_table, key);
 	cur = hash_table->table[bin];
-	while (cur != NULL && cur->key != NULL && sse_strcmp(key, cur->key) != 0)
+	while (cur != NULL && cur->key != NULL && strcmp(key, cur->key) != 0)
 	{
 		last = cur;
 		cur = cur->next;
 	}
-	if(cur != NULL && cur->key != NULL && sse_strcmp(key, cur->key) == 0)
+	if(cur != NULL && cur->key != NULL && strcmp(key, cur->key) == 0)
 	{
 		free(cur->key);
 		cur->key = strdup(key);
@@ -119,48 +118,101 @@ char		*ht_get(t_hashtbl *hash_table, char *key)
 	bin = ft_hash(hash_table, key);
 	cur = hash_table->table[bin];
 
-	while (cur != NULL && cur->key != NULL  && sse_strcmp(key, cur->key) != 0)
+	while (cur != NULL && cur->key != NULL  && strcmp(key, cur->key) != 0)
 		cur = cur->next;
-	if (cur == NULL || cur->key == NULL || sse_strcmp(key, cur->key) != 0)
+	if (cur == NULL || cur->key == NULL || strcmp(key, cur->key) != 0)
 		return (NULL);
 	else
 		return (cur->value);
 }
 
-int			main(int argc, const char *argv[])
+int		in_list(const char *line, char c)
 {
-	/* clock_t begin = clock(); */
-	char		*buf1;
-	char		*buf2;
-	size_t		len;
+	while (*line)
+	{
+		if (*line == c)
+			return (1);
+		line++;
+	}
+	return (0);
+}
+
+char	*ft_strtok(char *s1, const char *s2)
+{
+	static char	*ptr;
+	static int	i;
+	char		*ret;
+
+	if (s1)
+		ptr = s1;
+	if (*ptr == '\0')
+		return (NULL);
+	if (*ptr == '\n')
+	{
+		i++;
+		ptr++;
+		return ("\n");
+	}
+	ret = ptr;
+	while (*ptr && !in_list(s2, *ptr))
+	{
+		i++;
+		ptr++;
+	}
+	if (in_list(s2, *ptr))
+		*ptr = '\0';
+	ptr++;
+	i++;
+	return (ret);
+}
+
+int			main(void)
+{
+	char		*key;
 	char		*value;
+	char		*buffer;
+	char		*file;
+	int			ret;
+	int			buf_count;
 	t_hashtbl	*hash_table;
 
-	len = 0;
+	buf_count = 0;
+	buffer = ft_strnew(BUFF_SIZE);
+	file = ft_strnew(BUFF_SIZE);
 	hash_table = create_hashtable(r_max);
-	buf1 = NULL;
-	buf2 = NULL;
-	while (getline(&buf1, &len, stdin) != -1)
+	ret = 0;
+	while((ret = read(0, buffer, BUFF_SIZE)) > 1)
 	{
-		if (*buf1 == '\n')
-			break;
-		getline(&buf2, &len, stdin);
-		set_hash(hash_table, buf1, buf2);
+		if (ret < 0)
+			return (0);
+		buf_count += ret;
+		file = ft_strcat(file,buffer);
+		if (ret == BUFF_SIZE)
+			file = ft_realloc(file, buf_count + BUFF_SIZE + 1);
+		ft_bzero(buffer, BUFF_SIZE);
 	}
-	while (getline(&buf1, &len, stdin) != -1)
+	key = ft_strtok(file, "\n");
+	if(!(value = ft_strtok(NULL, "\n")))
+		return (0);
+	set_hash(hash_table, key, value);
+	while ((key = ft_strtok(NULL, "\n")) && strcmp(key, "\n"))
 	{
-		if ((value = ht_get(hash_table, buf1)) != NULL)
-			printf("%s", value);
+		if ((value = ft_strtok(NULL, "\n")))
+			set_hash(hash_table, key, value);
+	}
+	while ((key = ft_strtok(NULL, "\n")))
+	{
+		if ((value = ht_get(hash_table, key)) != NULL)
+		{
+			ft_putstr(value);
+			ft_putchar('\n');
+		}
 		else
 		{
-			buf1 = strtok(buf1, "\n");
-			printf("%s Not found.\n", buf1);
+			ft_putstr(key);
+			ft_putstr(": Not found.\n");
 		}
 	}
-	/* clock_t end = clock(); */
-	/* double time_spent = (double)(end - begin) / CLOCKS_PER_SEC; */
-	/* printf("time:%f\n", time_spent); */
-	(void)argv;
-	(void)argc;
+	free(file);
 	return (0);
 }

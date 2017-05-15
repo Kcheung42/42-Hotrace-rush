@@ -6,18 +6,19 @@
 #    By: kcheung <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/02/27 11:10:05 by kcheung           #+#    #+#              #
-#    Updated: 2017/05/14 14:32:01 by kcheung          ###   ########.fr        #
+#    Updated: 2017/05/14 21:20:05 by kcheung          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = hotrace
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g -Ofast
+CFLAGS = -Wall -Wextra -Werror -g -pg -Ofast
 
 SRC_DIR = ./srcs/
 SRC_NAME = main.c \
-		   asm_strcmp.c
+		   asm_strcmp.c \
+		   get_next_line.c
 SRCS = $(addprefix $(SRC_DIR), $(SRC_NAME))
 
 OBJ_DIR = ./obj/
